@@ -1,0 +1,32 @@
+server:
+  port: 84
+
+spring:
+  application:
+    name: nacos-order-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8771
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}
+            groupId: DEAFAULT_GROUP
+            data-type: json
+            rule-type: flow
+
+
+service-url:
+  nacos-user-service: http://nacos-payment-provider
+
+## 开启feign对sentinel的支持
+## 使用sentinel配置了服务降级，如果feign代理的服务端api出现故障了就会使用sentinel的fallback
+feign:
+  sentinel:
+    enabled: true
